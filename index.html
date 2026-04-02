@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SKU Recognition Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- ONNX Runtime Web -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.1/dist/ort.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🛒</span>
+                <h1>SKU Recognition Pro</h1>
+            </div>
+            <p class="subtitle">Identification fine-grained de produits</p>
+        </header>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="photo">📷 Photo</button>
+            <button class="mode-btn" data-mode="gallery">🖼️ Galerie</button>
+            <button class="mode-btn" data-mode="stream">🎥 Stream</button>
+            <button class="mode-btn" data-mode="inventory">📊 Inventaire</button>
+        </div>
+
+        <div id="photo-mode" class="mode-panel active">
+            <div class="card">
+                <button id="take-photo-btn" class="btn-primary btn-large">📸 Prendre une photo</button>
+                <div id="photo-preview" class="preview-container"></div>
+            </div>
+        </div>
+
+        <div id="gallery-mode" class="mode-panel">
+            <div class="card">
+                <input type="file" id="gallery-input" accept="image/*" style="display: none">
+                <button id="choose-image-btn" class="btn-purple btn-large">🖼️ Choisir une image</button>
+                <div id="gallery-preview" class="preview-container"></div>
+            </div>
+        </div>
+
+        <div id="stream-mode" class="mode-panel">
+            <div class="card">
+                <video id="stream-video" autoplay playsinline></video>
+                <div class="stream-controls">
+                    <button id="start-stream-btn" class="btn-green btn-large">▶️ Démarrer (5s)</button>
+                    <button id="stop-stream-btn" class="btn-red btn-large" style="display: none;">⏹️ Arrêter</button>
+                </div>
+                <div id="stream-status" class="status-badge orange">Prêt</div>
+                <div id="stream-prediction" class="prediction-card" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div id="inventory-mode" class="mode-panel">
+            <div class="card">
+                <video id="inventory-video" autoplay playsinline></video>
+                <div class="inventory-controls">
+                    <button id="start-inventory-btn" class="btn-green btn-large">▶️ Démarrer (5s)</button>
+                    <button id="stop-inventory-btn" class="btn-red btn-large" style="display: none;">⏹️ Arrêter</button>
+                </div>
+                <div id="inventory-status" class="status-badge green">Prêt</div>
+                <div id="inventory-prediction" class="prediction-card" style="display: none;"></div>
+                <div id="inventory-list" class="inventory-list" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div id="result-card" class="result-card" style="display: none;">
+            <div class="result-header">
+                <span class="result-icon">✅</span>
+                <h3 id="result-title"></h3>
+            </div>
+            <div id="result-details" class="result-details"></div>
+        </div>
+
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>Chargement du modèle...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
